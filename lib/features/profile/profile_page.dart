@@ -8,46 +8,63 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        title: const Text('Profil', style: TextStyle(color: Colors.white)),
+        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const ProfileHeader(),
-            const SizedBox(height: 24),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Navigate to edit profile
-              },
-              icon: const Icon(Icons.edit),
-              label: const Text('Edit Profil'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 48),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [AppColors.primary, Color(0xFFA0522D)],
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const ProfileHeader(),
+              const SizedBox(height: 24),
+              ProfileMenuItem(
+                icon: Icons.edit,
+                title: 'Edit Profil',
+                onTap: () {
+                  // TODO: Navigate to edit profile
+                },
               ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: () => _showHelpBottomSheet(context),
-              icon: const Icon(Icons.help_outline),
-              label: const Text('Bantuan'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 48),
+              const SizedBox(height: 8),
+              ProfileMenuItem(
+                icon: Icons.settings,
+                title: 'Pengaturan',
+                onTap: () {
+                  // TODO: Navigate to settings
+                },
               ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: () => _showLogoutDialog(context),
-              icon: const Icon(Icons.logout),
-              label: const Text('Keluar'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.error,
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 48),
+              const SizedBox(height: 8),
+              ProfileMenuItem(
+                icon: Icons.notifications_outlined,
+                title: 'Notifikasi',
+                onTap: () {
+                  // TODO: Navigate to notifications
+                },
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              ProfileMenuItem(
+                icon: Icons.help_outline,
+                title: 'Bantuan',
+                onTap: () => _showHelpBottomSheet(context),
+              ),
+              const SizedBox(height: 8),
+              ProfileMenuItem(
+                icon: Icons.logout,
+                title: 'Keluar',
+                onTap: () => _showLogoutDialog(context),
+                isDestructive: true,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -124,21 +141,36 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(26, 0, 0, 0), // 10% opacity black
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Row(
           children: [
             Container(
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(30),
+                color: AppColors.primary.withAlpha(26),
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(
+                  color: AppColors.primary,
+                  width: 2,
+                ),
               ),
               child: Icon(
                 Icons.person,
-                size: 30,
+                size: 40,
                 color: AppColors.primary,
               ),
             ),
@@ -150,7 +182,8 @@ class ProfileHeader extends StatelessWidget {
                   Text(
                     'Riefka Maulida',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -161,10 +194,19 @@ class ProfileHeader extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    'Mahasiswa - Teknik Informatika',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textHint,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withAlpha(26),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      'Mahasiswa - Teknik Informatika',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
@@ -193,24 +235,51 @@ class ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: isDestructive ? AppColors.error : AppColors.textPrimary,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(13, 0, 0, 0), // 5% opacity black
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: isDestructive ? AppColors.error : AppColors.textPrimary,
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: isDestructive 
+                ? AppColors.error.withAlpha(26) 
+                : AppColors.primary.withAlpha(26),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            icon,
+            color: isDestructive ? AppColors.error : AppColors.primary,
+            size: 20,
+          ),
         ),
-      ),
-      trailing: Icon(
-        Icons.chevron_right,
-        color: AppColors.textHint,
-      ),
-      onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: isDestructive ? AppColors.error : AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        trailing: Icon(
+          Icons.chevron_right,
+          color: AppColors.textHint,
+        ),
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }
